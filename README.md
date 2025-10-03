@@ -2,9 +2,6 @@
 
 A simple, self-hosted web interface to generate speech using Microsoft's high-quality Edge Text-to-Speech (TTS) service. This tool allows you to generate audio files directly from your browser without needing to use the command line.
 
-![Screenshot of Edge TTS Web UI](https://i.imgur.com/rLz8f8T.png)
-*(You should replace this with your own screenshot after running the app)*
-
 ---
 
 ## Features

@@ -33,9 +33,9 @@ Installation
 Follow these steps to get the project running on your local machine.
 
 **1\. Clone the Repository**
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   git clone [https://github.com/your-username/edge-tts-webui.git](https://github.com/your-username/edge-tts-webui.git)  cd edge-tts-webui   `
-
+```pyhton
+git clone [https://github.com/your-username/edge-tts-webui.git](https://github.com/your-username/edge-tts-webui.git)  cd edge-tts-webui
+```
 Or simply download the ZIP file and extract it.
 
 ### 2\. Create the Output Directory

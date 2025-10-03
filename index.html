@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Generator</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h1 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 120px; resize: vertical; }
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        #status { text-align: center; margin-top: 20px; font-weight: bold; }
+        #download-link { text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text-to-Speech Generator</h1>
+        
+        <div class="form-group">
+            <label for="text-input">Teks to Audio:</label>
+            <textarea id="text-input" placeholder="Input your teks here..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="voice-input">Voice Actor Name</label>
+            <input type="text" id="voice-input" value="id-ID-ArdiNeural" placeholder="Contoh: id-ID-ArdiNeural atau id-ID-GadisNeural">
+        </div>
+
+        <div class="form-group">
+            <label for="filename-input">Output File Name (without .mp3):</label>
+            <input type="text" id="filename-input" placeholder="Example: audio_1">
+        </div>
+
+        <button id="generate-btn">Create Audio</button>
+
+        <div id="status"></div>
+        <div id="download-link"></div>
+    </div>
+
+    <script>
+        const generateBtn = document.getElementById('generate-btn');
+        const textInput = document.getElementById('text-input');
+        const voiceInput = document.getElementById('voice-input');
+        const filenameInput = document.getElementById('filename-input');
+        const statusDiv = document.getElementById('status');
+        const downloadDiv = document.getElementById('download-link');
+
+        generateBtn.addEventListener('click', async () => {
+            // Mengambil data dari form
+            const text = textInput.value.trim();
+            const voice = voiceInput.value.trim();
+            const filename = filenameInput.value.trim();
+
+            if (!text || !voice || !filename) {
+                statusDiv.textContent = 'Error: Semua kolom harus diisi!';
+                statusDiv.style.color = 'red';
+                return;
+            }
+
+            // UI feedback
+            statusDiv.textContent = 'Membuat audio, mohon tunggu...';
+            statusDiv.style.color = 'orange';
+            generateBtn.disabled = true;
+            downloadDiv.innerHTML = '';
+
+            try {
+                // Mengirim data ke server Python
+                const response = await fetch('http://localhost:5050/generate-speech', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        voice: voice,
+                        filename: filename
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Terjadi kesalahan di server.');
+                }
+                
+                statusDiv.textContent = 'Sukses!';
+                statusDiv.style.color = 'green';
+
+                // Membuat link download
+                const downloadLink = document.createElement('a');
+                downloadLink.href = `http://localhost:5050${result.filePath}`;
+                downloadLink.textContent = `Unduh: ${filename}.mp3`;
+                downloadLink.download = `${filename}.mp3`;
+                downloadDiv.appendChild(downloadLink);
+
+            } catch (error) {
+                statusDiv.textContent = `Error: ${error.message}`;
+                statusDiv.style.color = 'red';
+            } finally {
+                generateBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

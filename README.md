@@ -29,7 +29,7 @@ Follow these steps to get the project running on your local machine.
 1.  **Clone the Repository**
 
     ```bash
-    git clone [https://github.com/your-username/edge-tts-webui.git](https://github.com/your-username/edge-tts-webui.git)
+    git clone https://github.com/tuanona/edge-tts-webui.git
     cd edge-tts-webui
     ```
 
